@@ -66,17 +66,27 @@ h1{font-size:clamp(2.2rem,9vw,4.2rem);letter-spacing:.01em}
 .tg{display:flex;align-items:center;gap:14px;text-align:left;padding:14px 18px;border-radius:20px;border:1px solid var(--olive);background:var(--white);color:var(--ink);font:400 1rem/1.4 "Hind Siliguri",system-ui,sans-serif;cursor:pointer}.tg:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
 .sw{flex:none;position:relative;width:46px;height:28px;border-radius:99px;background:#d6dccb;transition:background .4s}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:transform .4s var(--e)}
 .tg.on .sw{background:var(--olive)}.tg.on .sw::after{transform:translateX(18px)}
-@media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.glyph path{stroke-dashoffset:0}}
+#flash{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;background:radial-gradient(circle,rgba(187,217,240,.4),transparent 65%)}#flash.on{animation:fl 1.1s ease-out}@keyframes fl{30%{opacity:1}}
+body::after{content:"";position:fixed;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(10,14,4,.4))}
+.glyph path.comet{stroke:#fff;stroke-width:2.6;stroke-dasharray:.07 1;stroke-dashoffset:.07;filter:drop-shadow(0 0 6px #fff)}.on .glyph path.comet{animation:cm 2.6s var(--e) forwards}@keyframes cm{to{stroke-dashoffset:-1}}
+#need{overflow:hidden}#needWall{position:absolute;inset:0;animation:wp 3s ease-in-out infinite}@keyframes wp{50%{transform:scale(1.02)}}
+#needWall span{position:absolute;white-space:nowrap;color:var(--blue);opacity:0;animation:nw 2.2s var(--e) forwards}@keyframes nw{from{opacity:0;filter:blur(10px);transform:scale(1.3) rotate(var(--r))}to{opacity:var(--o);filter:none;transform:scale(1) rotate(var(--r))}}
+#needBig{position:relative;z-index:2;font-size:clamp(2.2rem,10vw,5rem);line-height:1.25;color:var(--white);text-shadow:0 0 40px rgba(187,217,240,.9),0 0 6px var(--ink);opacity:0}#needBig.show{animation:sharp 2.4s var(--e) forwards}
+.skipme{margin:1.4rem auto 0;max-width:30rem;padding:18px 22px;border-radius:22px;background:linear-gradient(135deg,var(--blue),#dcebf7);color:var(--ink);box-shadow:0 18px 50px rgba(187,217,240,.8);opacity:0;transform:translateY(14px) scale(.97);filter:blur(6px);transition:all 1.2s var(--e)}.skipme.show{opacity:1;transform:none;filter:none}
+.skipme b{display:inline-block;font:500 clamp(2.2rem,9vw,3.4rem)/1.1 "Cormorant Garamond",Georgia,serif;background:linear-gradient(transparent 62%,rgba(107,122,58,.45) 62%)}.skipme span{display:block;margin-top:.5rem}
+#admErr{background:#f3dcd5;color:#6b2a1b;padding:10px 14px;border-radius:12px;margin-top:12px}#adm .lv{margin-top:14px;padding:14px 18px;border-radius:16px;background:var(--blue)}
+@media(prefers-reduced-motion:reduce){.glyph path.comet{display:none}*,::before,::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.glyph path{stroke-dashoffset:0}}
 </style></head><body>
 <noscript><p style="padding:2rem;color:#fff">This story needs JavaScript. Please enable it and reload.</p></noscript>
-<canvas id="fx"></canvas><div id="barw"><i id="bar"></i></div><div id="toast" role="status"></div><audio id="bgm" src="SaveTik.io_7705816897408847110.mp3" loop preload="none"></audio><button id="mt" aria-pressed="false">♪ off</button>
+<canvas id="fx"></canvas><div id="flash"></div><div id="barw"><i id="bar"></i></div><div id="toast" role="status"></div><audio id="bgm" src="SaveTik.io_7705816897408847110.mp3" loop preload="none"></audio>
 <main>
 <section class="scene on" id="gender"><div><h1 class="serif">Male or Female?</h1>
 <div class="row"><button class="btn" data-g="male">Male</button><button class="btn" data-g="female">Female</button></div></div></section>
-<section class="scene" id="i"><svg class="glyph" viewBox="0 0 100 120" aria-label="I"><g fill="none" stroke="#BBD9F0" stroke-width="1.6" stroke-linecap="round"><path pathLength="1" d="M50 10V110"/><path pathLength="1" style="animation-delay:1.6s" d="M30 10H70"/><path pathLength="1" style="animation-delay:2.1s" d="M30 110H70"/></g></svg></section>
-<section class="scene" id="love"><div><svg class="glyph heart" viewBox="0 0 100 90" aria-label="heart"><g fill="none" stroke="#BBD9F0" stroke-width="1.2" stroke-linecap="round"><path pathLength="1" d="M50 82C20 58 6 40 6 25 6 12 16 4 28 4 38 4 46 10 50 18 54 10 62 4 72 4 84 4 94 12 94 25 94 40 80 58 50 82Z"/><path pathLength="1" style="animation-delay:.9s;opacity:.5" transform="translate(9 8) scale(.82)" d="M50 82C20 58 6 40 6 25 6 12 16 4 28 4 38 4 46 10 50 18 54 10 62 4 72 4 84 4 94 12 94 25 94 40 80 58 50 82Z"/></g></svg><h2 class="serif spaced" id="loveWord"></h2></div></section>
+<section class="scene" id="i"><svg class="glyph" viewBox="0 0 100 120" aria-label="I"><g fill="none" stroke="#BBD9F0" stroke-width="1.6" stroke-linecap="round"><path pathLength="1" d="M50 10V110"/><path class="comet" pathLength="1" d="M50 10V110"/><path pathLength="1" style="animation-delay:1.6s" d="M30 10H70"/><path pathLength="1" style="animation-delay:2.1s" d="M30 110H70"/></g></svg></section>
+<section class="scene" id="love"><div><svg class="glyph heart" viewBox="0 0 100 90" aria-label="heart"><g fill="none" stroke="#BBD9F0" stroke-width="1.2" stroke-linecap="round"><path pathLength="1" d="M50 82C20 58 6 40 6 25 6 12 16 4 28 4 38 4 46 10 50 18 54 10 62 4 72 4 84 4 94 12 94 25 94 40 80 58 50 82Z"/><path class="comet" pathLength="1" d="M50 82C20 58 6 40 6 25 6 12 16 4 28 4 38 4 46 10 50 18 54 10 62 4 72 4 84 4 94 12 94 25 94 40 80 58 50 82Z"/><path pathLength="1" style="animation-delay:.9s;opacity:.5" transform="translate(9 8) scale(.82)" d="M50 82C20 58 6 40 6 25 6 12 16 4 28 4 38 4 46 10 50 18 54 10 62 4 72 4 84 4 94 12 94 25 94 40 80 58 50 82Z"/></g></svg><h2 class="serif spaced" id="loveWord"></h2></div></section>
 <section class="scene" id="you"><h2 class="serif huge blurin">YOU</h2></section>
 <section class="scene lt" id="msg"><div id="msgBox" class="lines"></div></section>
+<section class="scene" id="need"><div id="needWall"></div><h2 class="serif" id="needBig"></h2></section>
 <section class="scene lt" id="promise"><div><p id="pq" class="lines"></p><div id="qm" class="serif">?</div><div class="row hid" id="yn"><button class="btn solid" id="yes">YES</button><button class="btn" id="no">NO</button></div></div></section>
 <section class="scene lt" id="chat"><div class="chat"><div id="msgs"></div><button class="btn solid hid" id="toFinal">Continue</button></div></section>
 <section class="scene" id="no"><div class="lines"><p class="en">ঠিক আছে 🤍 কোনো জোর নেই।</p><p class="en" style="animation-delay:.8s">এটা শুধু একটা ছোট্ট game ছিল। চাইলে আবার ভেবে দেখো।</p><div class="row"><button class="btn" id="retry">Go back</button></div></div></section>
@@ -84,11 +94,11 @@ h1{font-size:clamp(2.2rem,9vw,4.2rem);letter-spacing:.01em}
 <section class="scene lt" id="p2"><div><div id="p2Box" class="lines"></div><div class="row hid" id="sealRow"><button class="btn solid hold" id="seal">Hold to promise</button></div></div></section>
 <section class="scene lt" id="p3"><div id="p3Box" class="lines"></div></section>
 <section class="scene" id="us"><div><svg class="us" viewBox="0 0 200 100" aria-hidden="true"><circle class="ca" cx="100" cy="50" r="34" stroke="#BBD9F0"/><circle class="cb" cx="100" cy="50" r="34" stroke="#F6F4EC"/></svg><p id="usTxt" class="lines" style="min-height:3.4em;margin-top:1.5rem"></p><div class="row hid" id="usRow"><button class="btn solid" id="ok">OK</button><button class="btn" id="nope">NO</button></div></div></section>
-<section class="scene lt" id="serious"><div><div id="serBox" class="lines"></div><div class="tgs" id="tgs"><button class="tg" id="tSkip"><i class="sw"></i><span>Ami shob skip kore dite chai</span></button><button class="tg" id="tStay"><i class="sw"></i><span>Ami kichu skip korbo na. Ami tomar sathe amar puro life-ta dite chai 🤍</span></button></div></div></section>
+<section class="scene lt" id="serious"><div><div id="serBox" class="lines"></div><div class="skipme" id="skipMe"><b>Skip me.</b><span>Ei kosom, promise, A to Z, shob ami skip korte bolchi. Karon amader ekhono relationship na.</span></div><div class="tgs" id="tgs"><button class="tg" id="tSkip"><i class="sw"></i><span>Ami shob skip kore dite chai</span></button><button class="tg" id="tStay"><i class="sw"></i><span>Ami kichu skip korbo na. Ami tomar sathe amar puro life-ta dite chai 🤍</span></button></div></div></section>
 <section class="scene lt" id="note"><div id="noteBox" class="lines"></div></section>
 <section class="scene" id="end"><div><h1 class="serif blurin" style="letter-spacing:.25em;padding-left:.25em">The End</h1><p class="en" id="endNote" style="animation-delay:2.5s;margin-top:1.2rem">🤍</p></div></section>
 </main>
-<div id="adm" hidden><header><h1>Visitors</h1><span id="live"><i></i><b>Connecting</b></span><span id="lastAct"></span><button id="admX">Close</button></header><div id="stats"></div>
+<div id="adm" hidden><header><h1>Visitors</h1><span id="live"><i></i><b>Connecting</b></span><span id="lastAct"></span><button id="admX">Close</button></header><p id="admErr" hidden></p><div id="latest"></div><div id="stats"></div>
 <div class="bar"><input id="q" placeholder="Search session, browser, OS"><select id="fg"><option value="">All genders</option><option>male</option><option>female</option></select><select id="fs"><option value="">All status</option><option value="yes">YES</option><option value="no">NO</option><option value="done">Completed</option></select><input id="d1" type="date"><input id="d2" type="date"><select id="so"><option value="lastActiveAt">Last activity</option><option value="createdAt">Entry time</option><option value="gender">Gender</option></select></div>
 <div class="tw"><table><thead><tr><th>Session</th><th>Gender</th><th>Device</th><th>Browser</th><th>OS</th><th>Screen</th><th>Entry</th><th>Last active</th><th>Scene</th><th>Choice</th><th>Done</th></tr></thead><tbody id="tb"></tbody></table></div>
 <dialog id="dl"><pre id="dp"></pre><button id="dlX">Close</button></dialog></div><script type="module">
@@ -106,7 +116,7 @@ let uid=null;const ua=navigator.userAgent;
 const device={type:/iPad|Tablet/.test(ua)?"tablet":/Mobi|Android|iPhone/.test(ua)?"mobile":"desktop",
 browser:/Edg\//.test(ua)?"Edge":/OPR\//.test(ua)?"Opera":/Chrome\//.test(ua)?"Chrome":/Firefox\//.test(ua)?"Firefox":/Safari\//.test(ua)?"Safari":"Other",
 os:/Android/.test(ua)?"Android":/iPhone|iPad/.test(ua)?"iOS":/Windows/.test(ua)?"Windows":/Mac/.test(ua)?"macOS":/Linux/.test(ua)?"Linux":"Other"};
-async function init(){try{uid=(await signInAnonymously(auth)).user.uid;return true}catch(e){console.warn("Analytics offline:",e.code||e);return false}}
+async function init(){try{uid=(await signInAnonymously(auth)).user.uid;return true}catch(e){window.initErr=e.code||String(e);console.warn("Analytics offline:",e.code||e);return false}}
 function track(p={}){if(!uid)return;update(ref(db,"sessions/"+uid),{...p,lastActiveAt:serverTimestamp()}).catch(e=>console.warn("Track failed:",e.code||e))}
 function start(gender){track({gender,createdAt:serverTimestamp(),device:{...device,screenWidth:innerWidth,screenHeight:innerHeight}})}
 setInterval(()=>{if(!document.hidden)track()},30000);
@@ -119,13 +129,18 @@ function letters(el,t){el.innerHTML="";[...t].forEach((c,i)=>{const s=document.c
 function ui(){document.querySelectorAll(".btn").forEach(b=>{
 b.addEventListener("pointerdown",e=>{const r=b.getBoundingClientRect(),d=Math.max(r.width,r.height)*2,s=document.createElement("span");s.className="rp";Object.assign(s.style,{width:d+"px",height:d+"px",left:e.clientX-r.left-d/2+"px",top:e.clientY-r.top-d/2+"px"});b.appendChild(s);setTimeout(()=>s.remove(),700)});
 if(!R&&matchMedia("(hover:hover)").matches){b.addEventListener("pointermove",e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.18}px,${(e.clientY-r.top-r.height/2)*.25}px)`});b.addEventListener("pointerleave",()=>b.style.transform="")}})}
-function particles(){if(R)return;const c=document.getElementById("fx"),x=c.getContext("2d");let w,h;const rs=()=>{w=c.width=innerWidth;h=c.height=innerHeight};rs();addEventListener("resize",rs);
-const n=innerWidth<600?28:50,p=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.6+.4,v:Math.random()*.25+.05,a:Math.random()*.4+.1}));
-(function f(){if(!document.hidden){x.clearRect(0,0,w,h);for(const q of p){q.y-=q.v;if(q.y<-5){q.y=h+5;q.x=Math.random()*w}x.fillStyle=`rgba(187,217,240,${q.a})`;x.beginPath();x.arc(q.x,q.y,q.r,0,6.3);x.fill()}}requestAnimationFrame(f)})()}
+function particles(){if(R)return;const c=document.getElementById("fx"),x=c.getContext("2d"),dpr=Math.min(devicePixelRatio||1,2);let w,h,mx=0,my=0,tx=0,ty=0,t=0;
+const rs=()=>{w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0)};rs();addEventListener("resize",rs);addEventListener("pointermove",e=>{tx=e.clientX/w-.5;ty=e.clientY/h-.5});
+const n=innerWidth<600?34:70,p=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,z:Math.random(),r:Math.random()*2+.5,v:Math.random()*.3+.05,a:Math.random()*.5+.15,ph:Math.random()*6.3}));
+(function f(){t+=.016;if(!document.hidden){mx+=(tx-mx)*.05;my+=(ty-my)*.05;x.clearRect(0,0,w,h);
+for(const q of p){q.y-=q.v*(.4+q.z);q.x+=Math.sin(t+q.ph)*.15;if(q.y<-10){q.y=h+10;q.x=Math.random()*w}
+const px=q.x+mx*40*q.z,py=q.y+my*40*q.z,al=q.a*(.6+.4*Math.sin(t*1.5+q.ph)),r=q.r*(.6+q.z)*(q.z>.8?3:1)*4,g=x.createRadialGradient(px,py,0,px,py,r);
+g.addColorStop(0,`rgba(187,217,240,${al})`);g.addColorStop(1,"rgba(187,217,240,0)");x.fillStyle=g;x.beginPath();x.arc(px,py,r,0,6.3);x.fill()}}requestAnimationFrame(f)})()}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const order=["gender","i","love","you","msg","promise","chat","p2","p3","us","note","serious","final","end"];
+const order=["gender","i","love","you","msg","need","promise","chat","p2","p3","us","note","serious","final","end"];
 // ====== EDIT STORY TEXT HERE ======
-const MSG=["আমি তোমাকে একটা কথা বলতে চাই...","আমি তোমাকে একটা promise দিতে চাই।","আল্লাহকে সাক্ষী রেখে আমি বলতে চাই—","আমি তোমাকে বিয়ে করতে চাই।","আর তোমাকে কখনো ছেড়ে যেতে চাই না।"];
+const MSG=["আমি তোমাকে একটা কথা বলতে চাই...","আমি তোমাকে একটা promise দিতে চাই।","আল্লাহকে সাক্ষী রেখে আমি একটা কথা বলবো—","আমার তোমাকেই লাগবে।","আমি তোমাকে কখনো ছাইড়া যাবো না।","খাঁটি বাংলায় বললে—আমি তোমাকে বিয়ে করতে চাই।","যেভাবেই হোক, আমি তোমাকেই চাই।"];
+const NEED=["আমার তোমাকেই লাগবে","তোমাকে লাগবে","আমার শুধু তোমাকেই লাগবে","তোমাকেই লাগবে","আমার তোমাকেই লাগবে।।"];
 const PQ="তুমি কি আমাকে একটা promise করবে?";
 const CHAT=["Hey Waisuuu...","তুমি just YES-এ click করলা না...","তুমি একটা জিনিস খেয়াল করো নাই।","YES button-এর ভেতরে একটা secret ছিল।","এটা ছিল একটা ছোট্ট psychological game 😌","তুমি ভাবছিলে তুমি শুধু YES চাপছো...","কিন্তু YES-এর ভেতরে একটা secret message লুকানো ছিল।","আর তুমি game-টা complete করে ফেলেছো. 👀","Secret message:"];
 const SECRET=["আমি Arafat-কে বিয়ে করবো। 🤍","Promise. 🤍","এই কথাটা আমি আল্লাহকে সাক্ষী রেখে বলছি।"];
@@ -137,11 +152,14 @@ const NOTE=["Ekta kotha bolbo... ami onek beshi overthink kori.","Tai ei choto k
 // ==================================
 let online=false,back=null,tgBusy=0;
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),4000)}
-function go(id){$$(".scene").forEach(s=>s.classList.toggle("on",s.id===id));const i=order.indexOf(id);$("#bar").style.width=(i<0?100:i/(order.length-1)*100)+"%";track({currentScene:id})}
+function go(id){const fl=$("#flash");fl.classList.remove("on");void fl.offsetWidth;fl.classList.add("on");$$(".scene").forEach(s=>s.classList.toggle("on",s.id===id));const i=order.indexOf(id);$("#bar").style.width=(i<0?100:i/(order.length-1)*100)+"%";track({currentScene:id})}
 async function sI(){go("i");await wait(5200);sLove()}
 async function sLove(){go("love");await wait(3800);letters($("#loveWord"),"LOVE");await wait(3600);sYou()}
 async function sYou(){go("you");await wait(5200);sMsg()}
-async function sMsg(){go("msg");const b=$("#msgBox");b.innerHTML="";for(let i=0;i<MSG.length;i++){const p=put(b,i>=3?"em":"");await type(p,MSG[i],60);await wait(i===2?1800:1100)}await wait(2200);sPromise()}
+async function sMsg(){go("msg");const b=$("#msgBox");b.innerHTML="";for(let i=0;i<MSG.length;i++){const p=put(b,i>=3?"em":"");await type(p,MSG[i],60);await wait(i===2?1800:1100)}await wait(2200);sNeed()}
+async function sNeed(){go("need");const w=$("#needWall"),B=$("#needBig");w.innerHTML="";B.classList.remove("show");B.textContent="";const n=innerWidth<600?34:56;
+for(let i=0;i<n;i++){const s=document.createElement("span");s.textContent=NEED[i%NEED.length];s.style.cssText=`left:${(Math.random()*80-5).toFixed(1)}%;top:${(Math.random()*95).toFixed(1)}%;font-size:${(.9+Math.random()*2.2).toFixed(2)}rem;--o:${(.15+Math.random()*.6).toFixed(2)};--r:${(Math.random()*20-10).toFixed(1)}deg;animation-delay:${(i*.12).toFixed(2)}s`;w.appendChild(s)}
+await wait(n*120+1200);B.textContent="এট লাস্ট... আমার তোমাকেই লাগবে।";B.classList.add("show");await wait(4800);sPromise()}
 async function sPromise(){go("promise");$("#yn").classList.add("hid");const q=$("#pq");q.textContent="";await wait(900);await type(q,PQ,60);await wait(2400);$("#yn").classList.remove("hid")}
 async function sChat(){go("chat");const m=$("#msgs");m.innerHTML="";const tf=$("#toFinal");tf.classList.add("hid");
 for(const t of CHAT){const d=document.createElement("div");d.className="b dots";d.innerHTML="<i></i><i></i><i></i>";m.appendChild(d);await wait(t.length>20?1700:1100);d.className="b";d.textContent=t;await wait(700)}
@@ -151,28 +169,29 @@ async function sFinal(){go("final");const b=$("#finBox");b.innerHTML="";for(let 
 async function sP2(){go("p2");const b=$("#p2Box"),r=$("#sealRow");b.innerHTML="";r.classList.add("hid");$("#seal").classList.remove("go");for(let i=0;i<P2.length;i++){const p=put(b,i==1||i==3?"em":"");await type(p,P2[i],45);await wait(1200)}await wait(1800);sP3()}
 async function sP3(){go("p3");const b=$("#p3Box");b.innerHTML="";for(let i=0;i<P3.length;i++){const p=put(b,i==3?"em":"");await type(p,P3[i],45);await wait(1300)}await wait(1400);sUs()}
 async function sUs(){go("us");const r=$("#usRow"),t=$("#usTxt");r.classList.add("hid");t.textContent="";t.classList.remove("rise");await wait(4200);t.textContent="Shudhu amra dujon. 🤍";t.classList.add("rise");await wait(1600);r.classList.remove("hid")}
-async function sSerious(){go("serious");tgBusy=0;const b=$("#serBox"),g=$("#tgs");b.innerHTML="";g.classList.remove("show");$$(".tg").forEach(x=>x.classList.remove("on"));for(let i=0;i<SER.length;i++){const p=put(b,i==1||i==3?"em":"");await type(p,SER[i],35);await wait(1300)}g.classList.add("show")}
+async function sSerious(){go("serious");tgBusy=0;const b=$("#serBox"),g=$("#tgs");b.innerHTML="";g.classList.remove("show");$("#skipMe").classList.remove("show");$$(".tg").forEach(x=>x.classList.remove("on"));for(let i=0;i<SER.length;i++){const p=put(b,i==1||i==3?"em":"");await type(p,SER[i],35);await wait(1300)}$("#skipMe").classList.add("show");await wait(2200);g.classList.add("show")}
 async function sNote(){go("note");const b=$("#noteBox");b.innerHTML="";for(let i=0;i<NOTE.length;i++){const p=put(b,i==NOTE.length-1?"em":"");await type(p,NOTE[i],40);await wait(1500)}await wait(2000);sSerious()}
 async function sEnd(soft){go("end");$("#endNote").textContent=soft?"Thik ache 🤍 kono jor nei. Ami achi.":"🤍";track({"interactions/completed":true})}
-const bgm=$("#bgm"),mt=$("#mt");bgm.volume=.6;let mOn=false;function music(v){mOn=v;if(v)bgm.play().catch(()=>{mOn=false;mt.textContent="♪ off"});else bgm.pause();mt.textContent=v?"♪ on":"♪ off";mt.setAttribute("aria-pressed",v)}mt.onclick=()=>music(!mOn)
+const bgm=$("#bgm");bgm.volume=.6;let mStart=false;function music(){mStart=true;bgm.play().catch(()=>{})}addEventListener("pointerdown",()=>{if(mStart&&bgm.paused)bgm.play().catch(()=>{})})
 function hold(b,ms,done){let t,d=0;b.addEventListener("pointerdown",()=>{if(d)return;b.classList.add("go");t=setTimeout(()=>{d=1;done()},ms)});["pointerup","pointerleave","pointercancel"].forEach(x=>b.addEventListener(x,()=>{clearTimeout(t);if(!d)b.classList.remove("go")}));b.addEventListener("keydown",e=>{if(!d&&(e.key==="Enter"||e.key===" ")){e.preventDefault();d=1;b.classList.add("go");done()}})}
 // ===== Admin panel (open to anyone who presses P twice; no login) =====
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";"),fmt=t=>t?new Date(t).toLocaleString():"—";
 function openAdmin(){const o=$("#adm");if(!o.hidden)return;o.hidden=false;const A=s=>o.querySelector(s),S=new Map();let raf=0;
 const q=query(ref(db,"sessions"),orderByChild("lastActiveAt"),limitToLast(500));
 const draw=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(render)},up=s=>{S.set(s.key,{id:s.key,...s.val()});draw()};
-const offs=[onChildAdded(q,up),onChildChanged(q,up),onChildRemoved(q,s=>{S.delete(s.key);draw()}),onValue(ref(db,".info/connected"),s=>{A("#live").classList.toggle("on",!!s.val());A("#live b").textContent=s.val()?"Live":"Reconnecting"})];
+const er=e=>{const b=A("#admErr");b.hidden=false;b.textContent="Database error: "+(e.code||e.message)+" — Firebase Rules-e notun database.rules.json paste kore Publish koro."};const offs=[onChildAdded(q,up,er),onChildChanged(q,up,er),onChildRemoved(q,s=>{S.delete(s.key);draw()},er),onValue(ref(db,".info/connected"),s=>{A("#live").classList.toggle("on",!!s.val());A("#live b").textContent=s.val()?"Live":"Reconnecting"})];
 const ids=["q","fg","fs","d1","d2","so"];ids.forEach(i=>A("#"+i).oninput=draw);
-function render(){const all=[...S.values()],now=Date.now(),I=x=>x.interactions||{},D=x=>x.device||{},c=f=>all.filter(f).length;
+function render(){const all=[...S.values()],now=Date.now(),I=x=>x.interactions||{},D=x=>x.device||{},c=f=>all.filter(f).length,ch=x=>[I(x).yesClicked&&"YES",I(x).noClicked&&"NO",I(x).okClicked&&"OK",I(x).skipAll&&"SKIP ALL",I(x).stayAll&&"STAY"].filter(Boolean).join(" · ")||"—";
 A("#stats").innerHTML=[["Visitors",all.length],["Male",c(x=>x.gender==="male")],["Female",c(x=>x.gender==="female")],["YES",c(x=>I(x).yesClicked)],["NO",c(x=>I(x).noClicked)],["Completed",c(x=>I(x).completed)],["Active (2 min)",c(x=>now-x.lastActiveAt<12e4)]].map(([l,v])=>`<div><b>${v}</b><span>${l}</span></div>`).join("");
 const s=A("#q").value.toLowerCase(),g=A("#fg").value,st=A("#fs").value,a=A("#d1").value?new Date(A("#d1").value).getTime():0,z=A("#d2").value?new Date(A("#d2").value).getTime()+864e5:Infinity,k=A("#so").value;
 const rows=all.filter(x=>(!g||x.gender===g)&&(!st||(st==="yes"?I(x).yesClicked:st==="no"?I(x).noClicked:I(x).completed))&&x.createdAt>=a&&x.createdAt<z&&(!s||(x.id+D(x).browser+D(x).os+D(x).type).toLowerCase().includes(s))).sort((p,r)=>k==="gender"?String(p.gender).localeCompare(r.gender):(r[k]||0)-(p[k]||0));
-A("#tb").innerHTML=rows.map(x=>`<tr data-id="${esc(x.id)}"><td>${esc(x.id.slice(0,8))}</td><td>${esc(x.gender)}</td><td>${esc(D(x).type)}</td><td>${esc(D(x).browser)}</td><td>${esc(D(x).os)}</td><td>${esc(D(x).screenWidth)}×${esc(D(x).screenHeight)}</td><td>${fmt(x.createdAt)}</td><td>${fmt(x.lastActiveAt)}</td><td>${esc(x.currentScene)}</td><td>${I(x).yesClicked?"YES":I(x).noClicked?"NO":"—"}</td><td>${I(x).completed?"✓":""}</td></tr>`).join("")||'<tr><td colspan="11">No sessions yet.</td></tr>';
+A("#tb").innerHTML=rows.map(x=>`<tr data-id="${esc(x.id)}"><td>${esc(x.id.slice(0,8))}</td><td>${esc(x.gender)}</td><td>${esc(D(x).type)}</td><td>${esc(D(x).browser)}</td><td>${esc(D(x).os)}</td><td>${esc(D(x).screenWidth)}×${esc(D(x).screenHeight)}</td><td>${fmt(x.createdAt)}</td><td>${fmt(x.lastActiveAt)}</td><td>${esc(x.currentScene)}</td><td>${esc(ch(x))}</td><td>${I(x).completed?"✓":""}</td></tr>`).join("")||'<tr><td colspan="11">No sessions yet. Check: Anonymous sign-in on + Rules published.</td></tr>';
+const L=[...all].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))[0];A("#latest").innerHTML=L?`<div class="lv"><b>Latest visitor:</b> ${esc(L.gender)} · ${esc(D(L).type)} · ${esc(D(L).browser)}/${esc(D(L).os)} · scene: ${esc(L.currentScene)} · choices: ${esc(ch(L))} · ${fmt(L.createdAt)}</div>`:"";
 A("#lastAct").textContent=all.length?"Latest activity "+fmt(Math.max(...all.map(x=>x.lastActiveAt||0))):""}
 A("#tb").onclick=e=>{const r=e.target.closest("tr");if(!r||!S.has(r.dataset.id))return;A("#dp").textContent=JSON.stringify(S.get(r.dataset.id),null,2);A("#dl").showModal()};
 A("#dlX").onclick=()=>A("#dl").close();
 o._close=()=>{offs.forEach(f=>f());o.hidden=true};A("#admX").onclick=o._close;draw()}
-async function boot(){ui();particles();online=await init();if(!online)toast("Offline mode — the story still works");
+async function boot(){ui();particles();online=await init();if(!online)toast("Analytics off ("+window.initErr+") — story still works");
 $$("[data-g]").forEach(b=>b.addEventListener("click",async()=>{$$("[data-g]").forEach(x=>x.disabled=true);b.classList.add("pick");start(b.dataset.g);music(true);await wait(1000);sI()}));
 $("#yes").onclick=()=>{track({"interactions/yesClicked":true});sChat()};
 $("#no").onclick=()=>{back=sPromise;track({"interactions/noClicked":true});go("no")};
