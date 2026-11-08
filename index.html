@@ -48,6 +48,15 @@ h1{font-size:clamp(2.2rem,9vw,4.2rem);letter-spacing:.01em}
 .secret p{margin:.3em 0}
 #barw{position:fixed;top:0;left:0;right:0;height:2px;z-index:5}#bar{display:block;height:100%;width:0;background:var(--blue);transition:width 1.4s var(--e)}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:9;padding:10px 18px;border-radius:999px;background:var(--white);color:var(--ink);font-size:.85rem;opacity:0;transition:.5s var(--e);pointer-events:none}#toast.on{opacity:1;transform:translate(-50%,0)}
+ .btn.hold{isolation:isolate}.btn.hold::before{content:"";position:absolute;inset:0;width:0;background:#3f4a1f;z-index:-1}.btn.hold.go::before{width:100%;transition:width 1.6s linear}
+#adm{position:fixed;inset:0;z-index:20;background:var(--off);color:var(--ink);overflow:auto;padding:max(16px,env(safe-area-inset-top)) 16px 24px;font-size:15px;line-height:1.5;text-align:left}
+#adm[hidden]{display:none}#adm input,#adm select,#adm button{font:inherit;padding:10px 14px;border-radius:12px;border:1px solid var(--blue);background:var(--white);color:var(--ink)}#adm button{background:var(--olive);color:var(--white);border-color:var(--olive);cursor:pointer}
+#adm header{display:flex;gap:14px;align-items:center;flex-wrap:wrap}#adm h1{flex:1;font-size:1.6rem}#lastAct{font-size:13px;opacity:.65}
+#live{display:flex;align-items:center;gap:6px;background:var(--white);padding:6px 12px;border-radius:99px;font-size:13px}#live i{width:8px;height:8px;border-radius:50%;background:#aaa}#live.on i{background:var(--olive);animation:lp 1.6s infinite}@keyframes lp{50%{opacity:.3}}
+#stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:18px 0}#stats div{background:var(--white);border-radius:16px;padding:14px;border:1px solid var(--blue)}#stats b{display:block;font-size:26px;color:var(--olive)}#stats span{font-size:12px;opacity:.7}
+#adm .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}#adm .bar input:first-child{flex:1;min-width:180px}
+#adm .tw{overflow-x:auto;background:var(--white);border-radius:16px;border:1px solid var(--blue)}#adm table{border-collapse:collapse;width:100%;min-width:900px}#adm th,#adm td{padding:10px 12px;text-align:left;white-space:nowrap}#adm th{background:var(--blue);font-weight:500}#adm tbody tr{border-top:1px solid var(--off);cursor:pointer}#adm tbody tr:hover{background:var(--off)}
+#adm dialog{border:0;border-radius:20px;padding:20px;max-width:92vw}#adm pre{white-space:pre-wrap;word-break:break-all;margin:0 0 12px}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.glyph path{stroke-dashoffset:0}}
 </style></head><body>
 <noscript><p style="padding:2rem;color:#fff">This story needs JavaScript. Please enable it and reload.</p></noscript>
@@ -63,7 +72,14 @@ h1{font-size:clamp(2.2rem,9vw,4.2rem);letter-spacing:.01em}
 <section class="scene lt" id="chat"><div class="chat"><div id="msgs"></div><button class="btn solid hid" id="toFinal">Continue</button></div></section>
 <section class="scene" id="no"><div class="lines"><p class="rise">ঠিক আছে 🤍 কোনো জোর নেই।</p><p class="rise" style="animation-delay:.8s">এটা শুধু একটা ছোট্ট game ছিল। চাইলে আবার ভেবে দেখো।</p><div class="row"><button class="btn" id="retry">Go back</button></div></div></section>
 <section class="scene" id="final"><div id="finBox" class="lines"></div></section>
-</main><script type="module">
+<section class="scene lt" id="p2"><div><div id="p2Box" class="lines"></div><div class="row hid" id="sealRow"><button class="btn solid hold" id="seal">Hold to promise</button></div></div></section>
+<section class="scene lt" id="note"><div id="noteBox" class="lines"></div></section>
+<section class="scene" id="end"><div><h1 class="serif blurin" style="letter-spacing:.25em;padding-left:.25em">The End</h1><p class="rise" style="animation-delay:2.5s;margin-top:1.2rem">🤍</p></div></section>
+</main>
+<div id="adm" hidden><header><h1>Visitors</h1><span id="live"><i></i><b>Connecting</b></span><span id="lastAct"></span><button id="admX">Close</button></header><div id="stats"></div>
+<div class="bar"><input id="q" placeholder="Search session, browser, OS"><select id="fg"><option value="">All genders</option><option>male</option><option>female</option></select><select id="fs"><option value="">All status</option><option value="yes">YES</option><option value="no">NO</option><option value="done">Completed</option></select><input id="d1" type="date"><input id="d2" type="date"><select id="so"><option value="lastActiveAt">Last activity</option><option value="createdAt">Entry time</option><option value="gender">Gender</option></select></div>
+<div class="tw"><table><thead><tr><th>Session</th><th>Gender</th><th>Device</th><th>Browser</th><th>OS</th><th>Screen</th><th>Entry</th><th>Last active</th><th>Scene</th><th>Choice</th><th>Done</th></tr></thead><tbody id="tb"></tbody></table></div>
+<dialog id="dl"><pre id="dp"></pre><button id="dlX">Close</button></dialog></div><script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getDatabase} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 import {getAuth} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -73,7 +89,7 @@ const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
 const auth=getAuth(app);
 import {signInAnonymously} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {ref,update,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import {ref,update,serverTimestamp,query,orderByChild,limitToLast,onChildAdded,onChildChanged,onChildRemoved,onValue} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 let uid=null;const ua=navigator.userAgent;
 const device={type:/iPad|Tablet/.test(ua)?"tablet":/Mobi|Android|iPhone/.test(ua)?"mobile":"desktop",
 browser:/Edg\//.test(ua)?"Edge":/OPR\//.test(ua)?"Opera":/Chrome\//.test(ua)?"Chrome":/Firefox\//.test(ua)?"Firefox":/Safari\//.test(ua)?"Safari":"Other",
@@ -95,13 +111,15 @@ function particles(){if(R)return;const c=document.getElementById("fx"),x=c.getCo
 const n=innerWidth<600?28:50,p=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.6+.4,v:Math.random()*.25+.05,a:Math.random()*.4+.1}));
 (function f(){if(!document.hidden){x.clearRect(0,0,w,h);for(const q of p){q.y-=q.v;if(q.y<-5){q.y=h+5;q.x=Math.random()*w}x.fillStyle=`rgba(187,217,240,${q.a})`;x.beginPath();x.arc(q.x,q.y,q.r,0,6.3);x.fill()}}requestAnimationFrame(f)})()}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const order=["gender","i","love","you","msg","promise","chat","final"];
+const order=["gender","i","love","you","msg","promise","chat","p2","note","final","end"];
 // ====== EDIT STORY TEXT HERE ======
 const MSG=["আমি তোমাকে একটা কথা বলতে চাই...","আমি তোমাকে একটা promise দিতে চাই।","আল্লাহকে সাক্ষী রেখে আমি বলতে চাই—","আমি তোমাকে বিয়ে করতে চাই।","আর তোমাকে কখনো ছেড়ে যেতে চাই না।"];
 const PQ="তুমি কি আমাকে একটা promise করবে?";
 const CHAT=["Hey Waisuuu...","তুমি just YES-এ click করলা না...","তুমি একটা জিনিস খেয়াল করো নাই।","YES button-এর ভেতরে একটা secret ছিল।","এটা ছিল একটা ছোট্ট psychological game 😌","তুমি ভাবছিলে তুমি শুধু YES চাপছো...","কিন্তু YES-এর ভেতরে একটা secret message লুকানো ছিল।","আর তুমি game-টা complete করে ফেলেছো. 👀","Secret message:"];
 const SECRET=["আমি Arafat-কে বিয়ে করবো। 🤍","Promise. 🤍","এই কথাটা আমি আল্লাহকে সাক্ষী রেখে বলছি।"];
 const FINAL=["তুমি হয়তো এখন অবাক হয়ে গেছো... 😌","কিন্তু এটা ছিল শুধু একটা ছোট্ট psychological game.","তুমি YES choose করেছো—মানে তুমি এই little story-টার অংশ হয়ে গেছো।","এখন থেকে এই গল্পটা আর শুধু আমার না।","এটা আমাদের দুজনের। 🤍"];
+const P2=["Ar ekta promise ache... amar tarof theke.","Ami tomake kokhono chere jabo na.","Jai hoye jak na keno, ami tomake kokhono chere jabo na."];
+const NOTE=["Ekta kotha bolbo... ami onek beshi overthink kori.","Tai ei choto kajta korlam. Hoyto ektu bokami, hoyto ektu beshi serious.","Kintu ei bar ami tomake harate chai na.","Ami jani, tumi chaile amake pabe. Kintu ami tomake chaile pabo ki na, sure na.","Tai-i ei story-ta. Karon amar tomake lagbe. 🤍"];
 // ==================================
 let online=false;
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),4000)}
@@ -115,12 +133,32 @@ async function sChat(){go("chat");const m=$("#msgs");m.innerHTML="";const tf=$("
 for(const t of CHAT){const d=document.createElement("div");d.className="b dots";d.innerHTML="<i></i><i></i><i></i>";m.appendChild(d);await wait(t.length>20?1700:1100);d.className="b";d.textContent=t;await wait(700)}
 const s=document.createElement("div");s.className="secret";m.appendChild(s);for(const t of SECRET){const p=put(s);p.textContent=t;await wait(1100)}
 await wait(1200);tf.classList.remove("hid")}
-async function sFinal(){go("final");const b=$("#finBox");b.innerHTML="";for(let i=0;i<FINAL.length;i++){const p=put(b,"rise"+(i>2?" em":""));p.textContent=FINAL[i];await wait(2600)}track({"interactions/completed":true})}
+async function sFinal(){go("final");const b=$("#finBox");b.innerHTML="";for(let i=0;i<FINAL.length;i++){const p=put(b,"rise"+(i>2?" em":""));p.textContent=FINAL[i];await wait(2600)}await wait(1800);sEnd()}
+async function sP2(){go("p2");const b=$("#p2Box"),r=$("#sealRow");b.innerHTML="";r.classList.add("hid");$("#seal").classList.remove("go");for(let i=0;i<P2.length;i++){const p=put(b,i==1?"em":"");await type(p,P2[i],45);await wait(1200)}r.classList.remove("hid")}
+async function sNote(){go("note");const b=$("#noteBox");b.innerHTML="";for(let i=0;i<NOTE.length;i++){const p=put(b,i==NOTE.length-1?"em":"");await type(p,NOTE[i],40);await wait(1500)}await wait(2000);sFinal()}
+async function sEnd(){go("end");track({"interactions/completed":true})}
+function hold(b,ms,done){let t,d=0;b.addEventListener("pointerdown",()=>{if(d)return;b.classList.add("go");t=setTimeout(()=>{d=1;done()},ms)});["pointerup","pointerleave","pointercancel"].forEach(x=>b.addEventListener(x,()=>{clearTimeout(t);if(!d)b.classList.remove("go")}));b.addEventListener("keydown",e=>{if(!d&&(e.key==="Enter"||e.key===" ")){e.preventDefault();d=1;b.classList.add("go");done()}})}
+// ===== Admin panel (open to anyone who presses P twice; no login) =====
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";"),fmt=t=>t?new Date(t).toLocaleString():"—";
+function openAdmin(){const o=$("#adm");if(!o.hidden)return;o.hidden=false;const A=s=>o.querySelector(s),S=new Map();let raf=0;
+const q=query(ref(db,"sessions"),orderByChild("lastActiveAt"),limitToLast(500));
+const draw=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(render)},up=s=>{S.set(s.key,{id:s.key,...s.val()});draw()};
+const offs=[onChildAdded(q,up),onChildChanged(q,up),onChildRemoved(q,s=>{S.delete(s.key);draw()}),onValue(ref(db,".info/connected"),s=>{A("#live").classList.toggle("on",!!s.val());A("#live b").textContent=s.val()?"Live":"Reconnecting"})];
+const ids=["q","fg","fs","d1","d2","so"];ids.forEach(i=>A("#"+i).oninput=draw);
+function render(){const all=[...S.values()],now=Date.now(),I=x=>x.interactions||{},D=x=>x.device||{},c=f=>all.filter(f).length;
+A("#stats").innerHTML=[["Visitors",all.length],["Male",c(x=>x.gender==="male")],["Female",c(x=>x.gender==="female")],["YES",c(x=>I(x).yesClicked)],["NO",c(x=>I(x).noClicked)],["Completed",c(x=>I(x).completed)],["Active (2 min)",c(x=>now-x.lastActiveAt<12e4)]].map(([l,v])=>`<div><b>${v}</b><span>${l}</span></div>`).join("");
+const s=A("#q").value.toLowerCase(),g=A("#fg").value,st=A("#fs").value,a=A("#d1").value?new Date(A("#d1").value).getTime():0,z=A("#d2").value?new Date(A("#d2").value).getTime()+864e5:Infinity,k=A("#so").value;
+const rows=all.filter(x=>(!g||x.gender===g)&&(!st||(st==="yes"?I(x).yesClicked:st==="no"?I(x).noClicked:I(x).completed))&&x.createdAt>=a&&x.createdAt<z&&(!s||(x.id+D(x).browser+D(x).os+D(x).type).toLowerCase().includes(s))).sort((p,r)=>k==="gender"?String(p.gender).localeCompare(r.gender):(r[k]||0)-(p[k]||0));
+A("#tb").innerHTML=rows.map(x=>`<tr data-id="${esc(x.id)}"><td>${esc(x.id.slice(0,8))}</td><td>${esc(x.gender)}</td><td>${esc(D(x).type)}</td><td>${esc(D(x).browser)}</td><td>${esc(D(x).os)}</td><td>${esc(D(x).screenWidth)}×${esc(D(x).screenHeight)}</td><td>${fmt(x.createdAt)}</td><td>${fmt(x.lastActiveAt)}</td><td>${esc(x.currentScene)}</td><td>${I(x).yesClicked?"YES":I(x).noClicked?"NO":"—"}</td><td>${I(x).completed?"✓":""}</td></tr>`).join("")||'<tr><td colspan="11">No sessions yet.</td></tr>';
+A("#lastAct").textContent=all.length?"Latest activity "+fmt(Math.max(...all.map(x=>x.lastActiveAt||0))):""}
+A("#tb").onclick=e=>{const r=e.target.closest("tr");if(!r||!S.has(r.dataset.id))return;A("#dp").textContent=JSON.stringify(S.get(r.dataset.id),null,2);A("#dl").showModal()};
+A("#dlX").onclick=()=>A("#dl").close();
+o._close=()=>{offs.forEach(f=>f());o.hidden=true};A("#admX").onclick=o._close;draw()}
 async function boot(){ui();particles();online=await init();if(!online)toast("Offline mode — the story still works");
 $$("[data-g]").forEach(b=>b.addEventListener("click",async()=>{$$("[data-g]").forEach(x=>x.disabled=true);b.classList.add("pick");start(b.dataset.g);await wait(1000);sI()}));
 $("#yes").onclick=()=>{track({"interactions/yesClicked":true});sChat()};
 $("#no").onclick=()=>{track({"interactions/noClicked":true});go("no")};
-$("#retry").onclick=sPromise;$("#toFinal").onclick=sFinal;
-let last=0;addEventListener("keydown",e=>{if(e.key.toLowerCase()!=="p"||e.repeat)return;const n=Date.now();if(n-last<600)location.href="admin.html";last=n})}
+$("#retry").onclick=sPromise;$("#toFinal").onclick=sP2;hold($("#seal"),1600,()=>{track({"interactions/sealed":true});sNote()});
+let last=0;addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#adm").hidden)return $("#adm")._close();if(e.key.toLowerCase()!=="p"||e.repeat||e.target.matches("input,select,textarea"))return;const n=Date.now();if(n-last<600)openAdmin();last=n})}
 boot();
 </script></body></html>
