@@ -57,10 +57,19 @@ h1{font-size:clamp(2.2rem,9vw,4.2rem);letter-spacing:.01em}
 #adm .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}#adm .bar input:first-child{flex:1;min-width:180px}
 #adm .tw{overflow-x:auto;background:var(--white);border-radius:16px;border:1px solid var(--blue)}#adm table{border-collapse:collapse;width:100%;min-width:900px}#adm th,#adm td{padding:10px 12px;text-align:left;white-space:nowrap}#adm th{background:var(--blue);font-weight:500}#adm tbody tr{border-top:1px solid var(--off);cursor:pointer}#adm tbody tr:hover{background:var(--off)}
 #adm dialog{border:0;border-radius:20px;padding:20px;max-width:92vw}#adm pre{white-space:pre-wrap;word-break:break-all;margin:0 0 12px}
+.en{opacity:0}.on .en{animation:rise 1.6s 2.4s var(--e) both}
+#mt{position:fixed;top:calc(12px + env(safe-area-inset-top));right:14px;z-index:6;padding:6px 14px;border-radius:99px;border:1px solid var(--blue);background:rgba(34,40,18,.35);color:var(--blue);font:400 .8rem system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(8px)}
+.us{width:min(70vw,320px);overflow:visible}.us circle{fill:none;stroke-width:1.2;filter:drop-shadow(0 0 8px rgba(187,217,240,.7))}
+.on .ca{animation:ca 4s var(--e) forwards}.on .cb{animation:cb 4s var(--e) forwards}
+@keyframes ca{from{transform:translateX(-60px);opacity:0}to{transform:translateX(-18px);opacity:1}}@keyframes cb{from{transform:translateX(60px);opacity:0}to{transform:translateX(18px);opacity:1}}
+.tgs{display:grid;gap:12px;margin-top:1.8rem;opacity:0;pointer-events:none;transition:opacity 1.2s var(--e)}.tgs.show{opacity:1;pointer-events:auto}
+.tg{display:flex;align-items:center;gap:14px;text-align:left;padding:14px 18px;border-radius:20px;border:1px solid var(--olive);background:var(--white);color:var(--ink);font:400 1rem/1.4 "Hind Siliguri",system-ui,sans-serif;cursor:pointer}.tg:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+.sw{flex:none;position:relative;width:46px;height:28px;border-radius:99px;background:#d6dccb;transition:background .4s}.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:transform .4s var(--e)}
+.tg.on .sw{background:var(--olive)}.tg.on .sw::after{transform:translateX(18px)}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.glyph path{stroke-dashoffset:0}}
 </style></head><body>
 <noscript><p style="padding:2rem;color:#fff">This story needs JavaScript. Please enable it and reload.</p></noscript>
-<canvas id="fx"></canvas><div id="barw"><i id="bar"></i></div><div id="toast" role="status"></div>
+<canvas id="fx"></canvas><div id="barw"><i id="bar"></i></div><div id="toast" role="status"></div><audio id="bgm" src="SaveTik.io_7705816897408847110.mp3" loop preload="none"></audio><button id="mt" aria-pressed="false">♪ off</button>
 <main>
 <section class="scene on" id="gender"><div><h1 class="serif">Male or Female?</h1>
 <div class="row"><button class="btn" data-g="male">Male</button><button class="btn" data-g="female">Female</button></div></div></section>
@@ -70,11 +79,14 @@ h1{font-size:clamp(2.2rem,9vw,4.2rem);letter-spacing:.01em}
 <section class="scene lt" id="msg"><div id="msgBox" class="lines"></div></section>
 <section class="scene lt" id="promise"><div><p id="pq" class="lines"></p><div id="qm" class="serif">?</div><div class="row hid" id="yn"><button class="btn solid" id="yes">YES</button><button class="btn" id="no">NO</button></div></div></section>
 <section class="scene lt" id="chat"><div class="chat"><div id="msgs"></div><button class="btn solid hid" id="toFinal">Continue</button></div></section>
-<section class="scene" id="no"><div class="lines"><p class="rise">ঠিক আছে 🤍 কোনো জোর নেই।</p><p class="rise" style="animation-delay:.8s">এটা শুধু একটা ছোট্ট game ছিল। চাইলে আবার ভেবে দেখো।</p><div class="row"><button class="btn" id="retry">Go back</button></div></div></section>
+<section class="scene" id="no"><div class="lines"><p class="en">ঠিক আছে 🤍 কোনো জোর নেই।</p><p class="en" style="animation-delay:.8s">এটা শুধু একটা ছোট্ট game ছিল। চাইলে আবার ভেবে দেখো।</p><div class="row"><button class="btn" id="retry">Go back</button></div></div></section>
 <section class="scene" id="final"><div id="finBox" class="lines"></div></section>
 <section class="scene lt" id="p2"><div><div id="p2Box" class="lines"></div><div class="row hid" id="sealRow"><button class="btn solid hold" id="seal">Hold to promise</button></div></div></section>
+<section class="scene lt" id="p3"><div id="p3Box" class="lines"></div></section>
+<section class="scene" id="us"><div><svg class="us" viewBox="0 0 200 100" aria-hidden="true"><circle class="ca" cx="100" cy="50" r="34" stroke="#BBD9F0"/><circle class="cb" cx="100" cy="50" r="34" stroke="#F6F4EC"/></svg><p id="usTxt" class="lines" style="min-height:3.4em;margin-top:1.5rem"></p><div class="row hid" id="usRow"><button class="btn solid" id="ok">OK</button><button class="btn" id="nope">NO</button></div></div></section>
+<section class="scene lt" id="serious"><div><div id="serBox" class="lines"></div><div class="tgs" id="tgs"><button class="tg" id="tSkip"><i class="sw"></i><span>Ami shob skip kore dite chai</span></button><button class="tg" id="tStay"><i class="sw"></i><span>Ami kichu skip korbo na. Ami tomar sathe amar puro life-ta dite chai 🤍</span></button></div></div></section>
 <section class="scene lt" id="note"><div id="noteBox" class="lines"></div></section>
-<section class="scene" id="end"><div><h1 class="serif blurin" style="letter-spacing:.25em;padding-left:.25em">The End</h1><p class="rise" style="animation-delay:2.5s;margin-top:1.2rem">🤍</p></div></section>
+<section class="scene" id="end"><div><h1 class="serif blurin" style="letter-spacing:.25em;padding-left:.25em">The End</h1><p class="en" id="endNote" style="animation-delay:2.5s;margin-top:1.2rem">🤍</p></div></section>
 </main>
 <div id="adm" hidden><header><h1>Visitors</h1><span id="live"><i></i><b>Connecting</b></span><span id="lastAct"></span><button id="admX">Close</button></header><div id="stats"></div>
 <div class="bar"><input id="q" placeholder="Search session, browser, OS"><select id="fg"><option value="">All genders</option><option>male</option><option>female</option></select><select id="fs"><option value="">All status</option><option value="yes">YES</option><option value="no">NO</option><option value="done">Completed</option></select><input id="d1" type="date"><input id="d2" type="date"><select id="so"><option value="lastActiveAt">Last activity</option><option value="createdAt">Entry time</option><option value="gender">Gender</option></select></div>
@@ -111,17 +123,19 @@ function particles(){if(R)return;const c=document.getElementById("fx"),x=c.getCo
 const n=innerWidth<600?28:50,p=Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.6+.4,v:Math.random()*.25+.05,a:Math.random()*.4+.1}));
 (function f(){if(!document.hidden){x.clearRect(0,0,w,h);for(const q of p){q.y-=q.v;if(q.y<-5){q.y=h+5;q.x=Math.random()*w}x.fillStyle=`rgba(187,217,240,${q.a})`;x.beginPath();x.arc(q.x,q.y,q.r,0,6.3);x.fill()}}requestAnimationFrame(f)})()}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const order=["gender","i","love","you","msg","promise","chat","p2","note","final","end"];
+const order=["gender","i","love","you","msg","promise","chat","p2","p3","us","note","serious","final","end"];
 // ====== EDIT STORY TEXT HERE ======
 const MSG=["আমি তোমাকে একটা কথা বলতে চাই...","আমি তোমাকে একটা promise দিতে চাই।","আল্লাহকে সাক্ষী রেখে আমি বলতে চাই—","আমি তোমাকে বিয়ে করতে চাই।","আর তোমাকে কখনো ছেড়ে যেতে চাই না।"];
 const PQ="তুমি কি আমাকে একটা promise করবে?";
 const CHAT=["Hey Waisuuu...","তুমি just YES-এ click করলা না...","তুমি একটা জিনিস খেয়াল করো নাই।","YES button-এর ভেতরে একটা secret ছিল।","এটা ছিল একটা ছোট্ট psychological game 😌","তুমি ভাবছিলে তুমি শুধু YES চাপছো...","কিন্তু YES-এর ভেতরে একটা secret message লুকানো ছিল।","আর তুমি game-টা complete করে ফেলেছো. 👀","Secret message:"];
 const SECRET=["আমি Arafat-কে বিয়ে করবো। 🤍","Promise. 🤍","এই কথাটা আমি আল্লাহকে সাক্ষী রেখে বলছি।"];
 const FINAL=["তুমি হয়তো এখন অবাক হয়ে গেছো... 😌","কিন্তু এটা ছিল শুধু একটা ছোট্ট psychological game.","তুমি YES choose করেছো—মানে তুমি এই little story-টার অংশ হয়ে গেছো।","এখন থেকে এই গল্পটা আর শুধু আমার না।","এটা আমাদের দুজনের। 🤍"];
-const P2=["Ar ekta promise ache... amar tarof theke.","Ami tomake kokhono chere jabo na.","Jai hoye jak na keno, ami tomake kokhono chere jabo na."];
+const P2=["Ar ekta promise ache... amar tarof theke.","Ami tomake kokhono chere jabo na.","Jai hoye jak na keno, ami tomake kokhono chere jabo na.","Ei kothata ami Allah-ke shakkhi rekhe bolchi. Allah-r kosom, ami tomake kokhono chere jabo na."];
+const P3=["Ekhon tumi amake ekta promise dibe?","Amader majhe jeno kono 3rd person na ashe, please.","3rd person gulor jonno amar life onek waste hoye geche.","Ar ami chai na, ei bar abar sheta hok."];
+const SER=["Shesh-er age ekta kotha.","Ami tomake jor korbo na.","Onek topic-e ami tomake jor kori, kintu ei topic-e na, karon eta onek serious.","Eta ekta psychology game, kintu Allah-r kosom, eta moja-r bishoy na. Ami fully serious.","Tumi chaile ekhane shob skip kore dite parbe. Jodi mone hoy eta onek beshi hoye jachhe, tahole free-te skip koro.","Ar jodi ready thako, tahole niche-r toggle-ta on koro."];
 const NOTE=["Ekta kotha bolbo... ami onek beshi overthink kori.","Tai ei choto kajta korlam. Hoyto ektu bokami, hoyto ektu beshi serious.","Kintu ei bar ami tomake harate chai na.","Ami jani, tumi chaile amake pabe. Kintu ami tomake chaile pabo ki na, sure na.","Tai-i ei story-ta. Karon amar tomake lagbe. 🤍"];
 // ==================================
-let online=false;
+let online=false,back=null,tgBusy=0;
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),4000)}
 function go(id){$$(".scene").forEach(s=>s.classList.toggle("on",s.id===id));const i=order.indexOf(id);$("#bar").style.width=(i<0?100:i/(order.length-1)*100)+"%";track({currentScene:id})}
 async function sI(){go("i");await wait(5200);sLove()}
@@ -134,9 +148,13 @@ for(const t of CHAT){const d=document.createElement("div");d.className="b dots";
 const s=document.createElement("div");s.className="secret";m.appendChild(s);for(const t of SECRET){const p=put(s);p.textContent=t;await wait(1100)}
 await wait(1200);tf.classList.remove("hid")}
 async function sFinal(){go("final");const b=$("#finBox");b.innerHTML="";for(let i=0;i<FINAL.length;i++){const p=put(b,"rise"+(i>2?" em":""));p.textContent=FINAL[i];await wait(2600)}await wait(1800);sEnd()}
-async function sP2(){go("p2");const b=$("#p2Box"),r=$("#sealRow");b.innerHTML="";r.classList.add("hid");$("#seal").classList.remove("go");for(let i=0;i<P2.length;i++){const p=put(b,i==1?"em":"");await type(p,P2[i],45);await wait(1200)}r.classList.remove("hid")}
-async function sNote(){go("note");const b=$("#noteBox");b.innerHTML="";for(let i=0;i<NOTE.length;i++){const p=put(b,i==NOTE.length-1?"em":"");await type(p,NOTE[i],40);await wait(1500)}await wait(2000);sFinal()}
-async function sEnd(){go("end");track({"interactions/completed":true})}
+async function sP2(){go("p2");const b=$("#p2Box"),r=$("#sealRow");b.innerHTML="";r.classList.add("hid");$("#seal").classList.remove("go");for(let i=0;i<P2.length;i++){const p=put(b,i==1||i==3?"em":"");await type(p,P2[i],45);await wait(1200)}await wait(1800);sP3()}
+async function sP3(){go("p3");const b=$("#p3Box");b.innerHTML="";for(let i=0;i<P3.length;i++){const p=put(b,i==3?"em":"");await type(p,P3[i],45);await wait(1300)}await wait(1400);sUs()}
+async function sUs(){go("us");const r=$("#usRow"),t=$("#usTxt");r.classList.add("hid");t.textContent="";t.classList.remove("rise");await wait(4200);t.textContent="Shudhu amra dujon. 🤍";t.classList.add("rise");await wait(1600);r.classList.remove("hid")}
+async function sSerious(){go("serious");tgBusy=0;const b=$("#serBox"),g=$("#tgs");b.innerHTML="";g.classList.remove("show");$$(".tg").forEach(x=>x.classList.remove("on"));for(let i=0;i<SER.length;i++){const p=put(b,i==1||i==3?"em":"");await type(p,SER[i],35);await wait(1300)}g.classList.add("show")}
+async function sNote(){go("note");const b=$("#noteBox");b.innerHTML="";for(let i=0;i<NOTE.length;i++){const p=put(b,i==NOTE.length-1?"em":"");await type(p,NOTE[i],40);await wait(1500)}await wait(2000);sSerious()}
+async function sEnd(soft){go("end");$("#endNote").textContent=soft?"Thik ache 🤍 kono jor nei. Ami achi.":"🤍";track({"interactions/completed":true})}
+const bgm=$("#bgm"),mt=$("#mt");bgm.volume=.6;let mOn=false;function music(v){mOn=v;if(v)bgm.play().catch(()=>{mOn=false;mt.textContent="♪ off"});else bgm.pause();mt.textContent=v?"♪ on":"♪ off";mt.setAttribute("aria-pressed",v)}mt.onclick=()=>music(!mOn)
 function hold(b,ms,done){let t,d=0;b.addEventListener("pointerdown",()=>{if(d)return;b.classList.add("go");t=setTimeout(()=>{d=1;done()},ms)});["pointerup","pointerleave","pointercancel"].forEach(x=>b.addEventListener(x,()=>{clearTimeout(t);if(!d)b.classList.remove("go")}));b.addEventListener("keydown",e=>{if(!d&&(e.key==="Enter"||e.key===" ")){e.preventDefault();d=1;b.classList.add("go");done()}})}
 // ===== Admin panel (open to anyone who presses P twice; no login) =====
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";"),fmt=t=>t?new Date(t).toLocaleString():"—";
@@ -155,10 +173,14 @@ A("#tb").onclick=e=>{const r=e.target.closest("tr");if(!r||!S.has(r.dataset.id))
 A("#dlX").onclick=()=>A("#dl").close();
 o._close=()=>{offs.forEach(f=>f());o.hidden=true};A("#admX").onclick=o._close;draw()}
 async function boot(){ui();particles();online=await init();if(!online)toast("Offline mode — the story still works");
-$$("[data-g]").forEach(b=>b.addEventListener("click",async()=>{$$("[data-g]").forEach(x=>x.disabled=true);b.classList.add("pick");start(b.dataset.g);await wait(1000);sI()}));
+$$("[data-g]").forEach(b=>b.addEventListener("click",async()=>{$$("[data-g]").forEach(x=>x.disabled=true);b.classList.add("pick");start(b.dataset.g);music(true);await wait(1000);sI()}));
 $("#yes").onclick=()=>{track({"interactions/yesClicked":true});sChat()};
-$("#no").onclick=()=>{track({"interactions/noClicked":true});go("no")};
-$("#retry").onclick=sPromise;$("#toFinal").onclick=sP2;hold($("#seal"),1600,()=>{track({"interactions/sealed":true});sNote()});
+$("#no").onclick=()=>{back=sPromise;track({"interactions/noClicked":true});go("no")};
+$("#retry").onclick=()=>back&&back();$("#toFinal").onclick=sP2;
+$("#ok").onclick=()=>{track({"interactions/okClicked":true});sNote()};
+$("#nope").onclick=()=>{back=sUs;track({"interactions/noClicked":true});go("no")};
+$$(".tg").forEach(t=>t.onclick=async()=>{if(tgBusy)return;tgBusy=1;$$(".tg").forEach(x=>x.classList.toggle("on",x===t));const sk=t.id==="tSkip";track({["interactions/"+(sk?"skipAll":"stayAll")]:true});await wait(1500);sk?sEnd(true):sFinal()});
+hold($("#seal"),1600,()=>{track({"interactions/sealed":true});sNote()});
 let last=0;addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#adm").hidden)return $("#adm")._close();if(e.key.toLowerCase()!=="p"||e.repeat||e.target.matches("input,select,textarea"))return;const n=Date.now();if(n-last<600)openAdmin();last=n})}
 boot();
 </script></body></html>
