@@ -104,19 +104,16 @@ body::after{content:"";position:fixed;inset:0;z-index:4;pointer-events:none;back
 <dialog id="dl"><pre id="dp"></pre><button id="dlX">Close</button></dialog></div><script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getDatabase} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import {getAuth} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 // These web config values identify the project; they are NOT secrets. Security lives in the Database Rules.
 const firebaseConfig={apiKey:"AIzaSyCXLAfJldSGWOMGJoPTR4dmm4v2f39XOHs",authDomain:"waisuuu.firebaseapp.com",databaseURL:"https://waisuuu-default-rtdb.firebaseio.com",projectId:"waisuuu",storageBucket:"waisuuu.firebasestorage.app",messagingSenderId:"698109897300",appId:"1:698109897300:web:1107e64ec41fd3746f1bc1",measurementId:"G-T886G4K0B9"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
-const auth=getAuth(app);
-import {signInAnonymously} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {ref,update,serverTimestamp,query,orderByChild,limitToLast,onChildAdded,onChildChanged,onChildRemoved,onValue} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 let uid=null;const ua=navigator.userAgent;
 const device={type:/iPad|Tablet/.test(ua)?"tablet":/Mobi|Android|iPhone/.test(ua)?"mobile":"desktop",
 browser:/Edg\//.test(ua)?"Edge":/OPR\//.test(ua)?"Opera":/Chrome\//.test(ua)?"Chrome":/Firefox\//.test(ua)?"Firefox":/Safari\//.test(ua)?"Safari":"Other",
 os:/Android/.test(ua)?"Android":/iPhone|iPad/.test(ua)?"iOS":/Windows/.test(ua)?"Windows":/Mac/.test(ua)?"macOS":/Linux/.test(ua)?"Linux":"Other"};
-async function init(){try{uid=(await signInAnonymously(auth)).user.uid;return true}catch(e){window.initErr=e.code||String(e);console.warn("Analytics offline:",e.code||e);return false}}
+async function init(){try{uid=localStorage.getItem("sid");if(!uid){uid=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)).replace(/-/g,"");if(uid.length<16)uid+="0000000000000000";localStorage.setItem("sid",uid)}}catch{uid=uid||"s"+Date.now().toString(36)+Math.random().toString(36).slice(2,12)+"000000"}return true}
 function track(p={}){if(!uid)return;update(ref(db,"sessions/"+uid),{...p,lastActiveAt:serverTimestamp()}).catch(e=>console.warn("Track failed:",e.code||e))}
 function start(gender){track({gender,createdAt:serverTimestamp(),device:{...device,screenWidth:innerWidth,screenHeight:innerHeight}})}
 setInterval(()=>{if(!document.hidden)track()},30000);
